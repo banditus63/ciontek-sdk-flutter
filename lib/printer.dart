@@ -11,4 +11,8 @@ class CiontekPrinter {
   Future<void> setFontPath(String path) {
     return CiontekPlatform.instance.setFontPath(path);
   }
+
+  Future<String?> printLines({required List<CiontekPrintLine> lines}) {
+    return CiontekPlatform.instance.printLines(lines);
+  }
 }

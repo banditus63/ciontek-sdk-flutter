@@ -14,6 +14,7 @@ class PrinterMethodHandler(
         when (call.method) {
             "setFontPath" -> handleSetFontPath(call, result)
             "print" -> handlePrint(call, result)
+            "printLines" -> handlePrintLines(call, result)
             else -> result.notImplemented()
         }
     }
@@ -53,6 +54,15 @@ class PrinterMethodHandler(
         CiontekPrintHelper.printLine(line)
         result.success("Printing")
     }
+
+    private fun handlePrintLines(call: MethodCall, result: Result) {
+    // ... (logic to extract the list of linesMaps from call.arguments)
+    for (lineMap in linesMaps) {
+        val line = PrintLine.fromMap(lineMap) 
+        CiontekPrintHelper.printLine(line)
+    }
+    // ... (result.success)
+}
 
     private fun handleSetFontPath(call: MethodCall, result: Result) {
         val path = call.argument<String>("path")

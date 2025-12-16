@@ -28,6 +28,10 @@ abstract class CiontekPlatform extends PlatformInterface {
     throw UnimplementedError('printLine() has not been implemented.');
   }
 
+  Future<String?> printLines(List<CiontekPrintLine> lines) {
+    throw UnimplementedError('printLines() has not been implemented.');
+  }
+
   Future<void> setFontPath(String path) {
     throw UnimplementedError('setFontPath() has not been implemented.');
   }

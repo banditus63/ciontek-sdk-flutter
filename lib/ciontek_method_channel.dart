@@ -12,7 +12,8 @@ class MethodChannelCiontek extends CiontekPlatform {
 
   @override
   Future<String?> printLine(CiontekPrintLine line) async {
-    final result = await methodChannel.invokeMethod<String>('print', line.toMap());
+    final result =
+        await methodChannel.invokeMethod<String>('print', line.toMap());
     return result;
   }
 
@@ -24,5 +25,11 @@ class MethodChannelCiontek extends CiontekPlatform {
         'path': path,
       },
     );
+  }
+
+  Future<String?> printLines(List<CiontekPrintLine> lines) async {
+    final List<Map<String, dynamic>> lineMaps =
+        lines.map((line) => line.toMap()).toList();
+    return await methodChannel.invokeMethod('print', {'lines': lineMaps});
   }
 }
