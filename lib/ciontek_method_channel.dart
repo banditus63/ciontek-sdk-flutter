@@ -27,6 +27,7 @@ class MethodChannelCiontek extends CiontekPlatform {
     );
   }
 
+  @override
   Future<String?> printLines(List<CiontekPrintLine> lines) async {
     final List<Map<String, dynamic>> lineMaps =
         lines.map((line) => line.toMap()).toList();
