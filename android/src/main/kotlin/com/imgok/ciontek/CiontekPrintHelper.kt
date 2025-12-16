@@ -11,7 +11,9 @@ object CiontekPrintHelper {
     @Volatile
     private var initialized: Boolean = false
 
+    private const val ALIGN_LEFT = 0
     private const val ALIGN_CENTER = 1
+    private const val ALIGN_RIGHT = 2
     private const val DEFAULT_BARCODE_WIDTH = 360
     private const val DEFAULT_BARCODE_HEIGHT = 120
 
@@ -39,7 +41,8 @@ object CiontekPrintHelper {
         posApiHelper.PrintSetUnderline(if (line.underline) 1 else 0)
     val gray = line.textGray.coerceIn(1, 5)
     posApiHelper.PrintSetGray(gray)
-    posApiHelper.PrintSetAlign(ALIGN_CENTER)
+    val alignmentValue = line.alignment ?: ALIGN_LEFT
+        posApiHelper.PrintSetAlign(alignmentValue)
     }
 
 
@@ -59,6 +62,6 @@ object CiontekPrintHelper {
 
     @Synchronized
     fun printText(text: String) {
-        printLine(PrintLine(text, 3, false, false, "TEXT"))
+        printLine(PrintLine(text, 3, false, false, "TEXT", null))
     }
 }

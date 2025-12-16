@@ -6,6 +6,7 @@ class PrintLine(
     val bold: Boolean,
     val underline: Boolean,
     val type: String,
+    val alignment: Int?,
 ) {
     companion object {
         fun fromMap(map: Map<String, Any>): PrintLine {
@@ -15,6 +16,7 @@ class PrintLine(
                 bold = map["bold"] as Boolean,
                 underline = map["underline"] as Boolean,
                 type = map["type"] as String,
+                alignment = (map["alignment"] as? Int),
             )
         }
     }

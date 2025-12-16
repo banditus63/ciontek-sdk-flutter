@@ -13,12 +13,33 @@ enum CiontekPrintLineType {
   itf,
 }
 
+enum CiontekTextAlignment {
+  left,
+  center,
+  right,
+}
+
+// Extension to easily get the integer value for the native side
+extension CiontekTextAlignmentExtension on CiontekTextAlignment {
+  int get value {
+    switch (this) {
+      case CiontekTextAlignment.left:
+        return 0; // Common value for Left in printer SDKs
+      case CiontekTextAlignment.center:
+        return 1; // Common value for Center in printer SDKs
+      case CiontekTextAlignment.right:
+        return 2; // Common value for Right in printer SDKs
+    }
+  }
+}
+
 class CiontekPrintLine {
   final String text;
   final TextGray textGray;
   final bool bold;
   final bool underline;
   final CiontekPrintLineType type;
+  final CiontekTextAlignment? alignment;
 
   CiontekPrintLine({
     required this.text,
@@ -26,6 +47,7 @@ class CiontekPrintLine {
     this.bold = false,
     this.underline = false,
     this.type = CiontekPrintLineType.text,
+    this.alignment,
   });
 
   // Feed factory
@@ -41,6 +63,7 @@ class CiontekPrintLine {
       'textGray': textGray.index + 1,
       'bold': bold,
       'underline': underline,
+      'alignment': alignment?.value,
       'type': switch (type) {
         CiontekPrintLineType.text => 'TEXT',
         CiontekPrintLineType.code128 => 'CODE_128',
