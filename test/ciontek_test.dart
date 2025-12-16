@@ -8,13 +8,20 @@ class MockCiontekPlatform
     with MockPlatformInterfaceMixin
     implements CiontekPlatform {
   @override
-    Future<String?> printLine(CiontekPrintLine line) {
+  Future<String?> printLine(CiontekPrintLine line) {
     throw UnimplementedError();
   }
 
   @override
   Future<void> setFontPath(String path) async {
     // no-op for tests
+  }
+
+  @override
+  Future<String?> printLines(List<CiontekPrintLine> lines) {
+    // Simple no-op implementation (adjust return type if needed based on actual interface)
+    return Future<String?>.value(
+        null); // Or throw UnimplementedError() if you prefer
   }
 }
 
