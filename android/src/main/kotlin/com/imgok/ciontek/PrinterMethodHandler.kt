@@ -13,8 +13,8 @@ class PrinterMethodHandler(
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "setFontPath" -> handleSetFontPath(call, result)
-            "print" -> handlePrint(call, result)
-            "printLines" -> handlePrintLines(call, result)
+            // "print" -> handlePrint(call, result)
+            "print" -> handlePrintLines(call, result)
             else -> result.notImplemented()
         }
     }
@@ -55,14 +55,33 @@ class PrinterMethodHandler(
         result.success("Printing")
     }
 
+
     private fun handlePrintLines(call: MethodCall, result: Result) {
-    // ... (logic to extract the list of linesMaps from call.arguments)
-    for (lineMap in linesMaps) {
-        val line = PrintLine.fromMap(lineMap) 
-        CiontekPrintHelper.printLine(line)
+        // 1. Check printer status
+        if (!handlePrinterStatus(result)) { // Assuming this checks for printer availability
+            return
+        }
+
+        // 2. Retrieve the list of lines from the method call arguments
+        val args = call.arguments as? Map<*, *>
+        @Suppress("UNCHECKED_CAST")
+        val linesMaps = args?.get("lines") as? List<Map<String, Any>>
+        
+        if (linesMaps == null) {
+            result.error("INVALID_ARGUMENT", "Lines list is required", null)
+            return
+        }
+
+        CiontekPrintHelper.setupPrinter()
+
+        // 3. LOOP: Call the existing printLine helper method for each line
+        for (lineMap in linesMaps) {
+            val line = PrintLine.fromMap(lineMap) 
+            CiontekPrintHelper.printLine(line) // Calls the helper function in your CiontekPrintHelper.kt
+        }
+
+        result.success("Printing multiple lines")
     }
-    // ... (result.success)
-}
 
     private fun handleSetFontPath(call: MethodCall, result: Result) {
         val path = call.argument<String>("path")
