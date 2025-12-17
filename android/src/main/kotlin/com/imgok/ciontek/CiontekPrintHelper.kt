@@ -40,7 +40,7 @@ object CiontekPrintHelper {
     fun setLineSettings(line: PrintLine) {
         // font size (Width and Height)
         posApiHelper.PrintSetFontTTF(fontPath, line.fontSize.toInt().toByte(), line.fontSize.toInt().toByte())
-        
+
         posApiHelper.PrintSetBold(if (line.bold) 1 else 0)
         posApiHelper.PrintSetUnderline(if (line.underline) 1 else 0)
         val gray = line.textGray.coerceIn(1, 5)
@@ -76,7 +76,7 @@ object CiontekPrintHelper {
             // Use PrintBarcode for QR codes. 
             // Type 58 is commonly used for QR_CODE in this SDK, 
             // but we can pass the string "QR_CODE" if the SDK supports it.
-            posApiHelper.PrintBarcode(line.text, 240, 240, "QR_CODE")
+            posApiHelper.PrintBarcode(line.text, 180, 180, "QR_CODE")
             }
             else -> {
                 posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)
