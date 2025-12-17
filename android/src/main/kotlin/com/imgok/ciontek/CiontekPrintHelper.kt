@@ -54,11 +54,8 @@ object CiontekPrintHelper {
                 
                 setLineSettings(line)
 
-                val scale = when {
-                line.fontSize >= 48 -> 1 // Double size
-                else -> 0                // Normal size
-                }
-                posApiHelper.PrintSetFont(0, scale, scale)                    
+                val scale: Byte = if (line.fontSize >= 32f) 1.toByte() else 0.toByte()
+                posApiHelper.PrintSetFont(0.toByte(), scale, scale)                    
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
