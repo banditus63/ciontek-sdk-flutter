@@ -28,9 +28,6 @@ object CiontekPrintHelper {
             posApiHelper.PrintSetFont(0.toByte(), 0.toByte(), 0.toByte())
             initialized = true
         }
-        catch (e: Exception) {
-            Log.e("Ciontek", "Printer Init Failed: ${e.message}")
-        }
     }
 
     @Synchronized

@@ -12,8 +12,7 @@ class PrinterMethodHandler(
 ) : MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        when (call.method) {
-            "setFontPath" -> handleSetFontPath(call, result)
+        when (call.method) {            
             //  "print" -> handlePrint(call, result)
             "print" -> handlePrintLines(call, result)
             else -> result.notImplemented()
@@ -82,15 +81,5 @@ class PrinterMethodHandler(
         }
 
         result.success("Printing multiple lines")
-    }
-
-    private fun handleSetFontPath(call: MethodCall, result: Result) {
-        val path = call.argument<String>("path")
-        if (path.isNullOrBlank()) {
-            result.error("INVALID_ARGUMENT", "path is required", null)
-            return
-        }
-        CiontekPrintHelper.setFontPath(path)
-        result.success(null)
     }
 }
