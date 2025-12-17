@@ -13,7 +13,7 @@ class PrinterMethodHandler(
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "setFontPath" -> handleSetFontPath(call, result)
-            // "print" -> handlePrint(call, result)
+            //  "print" -> handlePrint(call, result)
             "print" -> handlePrintLines(call, result)
             else -> result.notImplemented()
         }

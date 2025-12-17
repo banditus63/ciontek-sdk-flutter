@@ -53,7 +53,12 @@ object CiontekPrintHelper {
     fun printLine(line: PrintLine) {
         when (line.type) {
             "TEXT" -> {
+                
                 setLineSettings(line)
+                
+                val size = line.fontSize.toInt().toByte()
+                posApiHelper.PrintSetFontTTF(fontPath, size, size)
+
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
