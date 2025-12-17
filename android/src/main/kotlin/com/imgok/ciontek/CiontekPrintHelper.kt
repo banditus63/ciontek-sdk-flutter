@@ -88,6 +88,6 @@ object CiontekPrintHelper {
     @Synchronized
     fun printText(text: String) {
         // Updated to pass null for the new image parameter
-        printLine(PrintLine(text, 3, false, false, "TEXT", null, null))
+        printLine(PrintLine(text, 3, false, false, "TEXT", null, null, null))
     }
 }
