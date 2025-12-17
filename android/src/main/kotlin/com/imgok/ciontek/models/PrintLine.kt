@@ -9,7 +9,7 @@ class PrintLine(
     val type: String,       
     val alignment: Int?,    
     val image: ByteArray?   
-)
+){
     companion object {
         fun fromMap(map: Map<String, Any>): PrintLine {
             return PrintLine(
@@ -24,3 +24,4 @@ class PrintLine(
             )
         }
     }
+}
