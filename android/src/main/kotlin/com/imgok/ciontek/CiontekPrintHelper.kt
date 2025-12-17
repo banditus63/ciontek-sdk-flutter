@@ -32,7 +32,7 @@ object CiontekPrintHelper {
     fun setupPrinter() {
         if (!initialized) {
             posApiHelper.PrintInit()
-            posApiHelper.PrintSetFontTTF(fontPath, 24.toByte(), 24.toByte())
+            posApiHelper.PrintSetFontTTF(0.toByte())
             initialized = true
         }
     }
@@ -59,7 +59,7 @@ object CiontekPrintHelper {
                  line.fontSize >= 32 -> 1.toByte() // For sizes like 32 or 40
                 else -> 0.toByte()                // Standard size (24 and below)
                  }
-                posApiHelper.PrintSetFontTTF(fontPath, internalScale, internalScale)
+                posApiHelper.PrintSetFont(internalScale)
 
                 posApiHelper.PrintStr(line.text)
             }
