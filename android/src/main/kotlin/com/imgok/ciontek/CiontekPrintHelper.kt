@@ -61,11 +61,18 @@ object CiontekPrintHelper {
                     
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     if (bitmap != null) {
-                        posApiHelper.PrintSetAlign(alignmentValue)
-                        // NOTE: If PrintBitmap fails to compile, change it to PrintBmp
+                        posApiHelper.PrintSetAlign(alignmentValue)                        
                         posApiHelper.PrintBmp(bitmap) 
                     }
                 }
+            }
+            "QR_CODE" -> {
+            val alignmentValue = line.alignment ?: ALIGN_CENTER
+            posApiHelper.PrintSetAlign(alignmentValue)
+            
+            // Typical Ciontek PrintQRCode parameters: (data, width, height, model)
+            // Model 4 is a standard high-quality QR model
+            posApiHelper.PrintQRCode(line.text, 240, 240, 4) 
             }
             else -> {
                 posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)

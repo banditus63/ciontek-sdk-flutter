@@ -65,6 +65,16 @@ class CiontekPrintLine {
     );
   }
 
+  // QR Code factory
+  factory CiontekPrintLine.qrCode(String data,
+      {CiontekTextAlignment alignment = CiontekTextAlignment.center}) {
+    return CiontekPrintLine(
+      text: data,
+      type: CiontekPrintLineType.qrCode,
+      alignment: alignment,
+    );
+  }
+
   // Feed factory
   factory CiontekPrintLine.feedPaper({int lines = 1}) {
     return CiontekPrintLine(
