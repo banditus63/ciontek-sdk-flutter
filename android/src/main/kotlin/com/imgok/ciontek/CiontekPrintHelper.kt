@@ -70,9 +70,10 @@ object CiontekPrintHelper {
             val alignmentValue = line.alignment ?: ALIGN_CENTER
             posApiHelper.PrintSetAlign(alignmentValue)
             
-            // Typical Ciontek PrintQRCode parameters: (data, width, height, model)
-            // Model 4 is a standard high-quality QR model
-            posApiHelper.PrintQRCode(line.text, 240, 240, 4) 
+            // Use PrintBarcode for QR codes. 
+            // Type 58 is commonly used for QR_CODE in this SDK, 
+            // but we can pass the string "QR_CODE" if the SDK supports it.
+            posApiHelper.PrintBarcode(line.text, 240, 240, "QR_CODE")
             }
             else -> {
                 posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)
