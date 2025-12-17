@@ -92,6 +92,7 @@ class CiontekPrintLine {
       'bold': bold,
       'underline': underline,
       'alignment': alignment?.value,
+      'image': image,
       'type': switch (type) {
         CiontekPrintLineType.text => 'TEXT',
         CiontekPrintLineType.code128 => 'CODE_128',
