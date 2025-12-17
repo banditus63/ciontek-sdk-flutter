@@ -1,6 +1,7 @@
 package com.imgok.ciontek
 
 import com.ctk.sdk.PosApiHelper
+import com.imgok.ciontek.models.PrintLine 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
