@@ -61,6 +61,7 @@ object CiontekPrintHelper {
                     
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     if (bitmap != null) {
+                        posApiHelper.PrintSetAlign(alignmentValue)
                         // NOTE: If PrintBitmap fails to compile, change it to PrintBmp
                         posApiHelper.PrintBmp(bitmap) 
                     }
