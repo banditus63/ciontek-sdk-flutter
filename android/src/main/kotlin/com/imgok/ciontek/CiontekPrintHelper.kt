@@ -8,8 +8,7 @@ import android.graphics.BitmapFactory
 object CiontekPrintHelper {
     private val posApiHelper: PosApiHelper = PosApiHelper.getInstance()
 
-    @Volatile
-    private var fontPath: String = "/storage/emulated/0/Download/ciontek-printer-font.ttf"
+   
 
     @Volatile
     private var initialized: Boolean = false
@@ -20,20 +19,17 @@ object CiontekPrintHelper {
     private const val DEFAULT_BARCODE_WIDTH = 360
     private const val DEFAULT_BARCODE_HEIGHT = 120
 
-    @Synchronized
-    fun setFontPath(path: String) {
-        fontPath = path
-        if (initialized) {
-            posApiHelper.PrintSetFontTTF(fontPath, 24.toByte(), 24.toByte())
-        }
-    }
+   
 
     @Synchronized
     fun setupPrinter() {
         if (!initialized) {
             posApiHelper.PrintInit()
-            posApiHelper.PrintSetFontTTF(fontPath, 24.toByte(), 24.toByte())
+            posApiHelper.PrintSetFont(0.toByte(), 0.toByte(), 0.toByte())
             initialized = true
+        }
+        catch (e: Exception) {
+            Log.e("Ciontek", "Printer Init Failed: ${e.message}")
         }
     }
 
@@ -54,16 +50,19 @@ object CiontekPrintHelper {
                 
                 setLineSettings(line)
 
-                val sizeInBytes = line.fontSize.toInt().toByte()
-                posApiHelper.PrintSetFontTTF(fontPath, sizeInBytes, sizeInBytes)                   
+                val multiplier: Byte = when {
+                line.fontSize >= 48f -> 2.toByte() // Huge (Triple size)
+                line.fontSize >= 32f -> 1.toByte() // Large (Double size)
+                else -> 0.toByte()                // Normal (Standard size)
+                }
+                posApiHelper.PrintSetFont(0.toByte(), multiplier, multiplier)                   
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
                 val imageData = line.image
                 if (imageData != null) {
                     val alignmentValue = line.alignment ?: ALIGN_CENTER
-                    posApiHelper.PrintSetAlign(alignmentValue)
-                    
+                                
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     if (bitmap != null) {
                         posApiHelper.PrintSetAlign(alignmentValue)                        
@@ -85,7 +84,8 @@ object CiontekPrintHelper {
             }
         }
         posApiHelper.PrintStart()
-    }
+        
+    }   
 
     @Synchronized
     fun printText(text: String) {
