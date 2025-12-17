@@ -32,7 +32,7 @@ object CiontekPrintHelper {
     fun setupPrinter() {
         if (!initialized) {
             posApiHelper.PrintInit()
-            posApiHelper.PrintSetFontTTF(0.toByte())
+            posApiHelper.PrintSetFontTTF(fontPath, 24.toByte(), 24.toByte())
             initialized = true
         }
     }
@@ -54,13 +54,11 @@ object CiontekPrintHelper {
                 
                 setLineSettings(line)
 
-                val internalScale: Byte = when {
-                line.fontSize >= 48 -> 2.toByte() // For sizes like 48 or 64
-                 line.fontSize >= 32 -> 1.toByte() // For sizes like 32 or 40
-                else -> 0.toByte()                // Standard size (24 and below)
-                 }
-                posApiHelper.PrintSetFont(internalScale)
-
+                val scale = when {
+                line.fontSize >= 48 -> 1 // Double size
+                else -> 0                // Normal size
+                }
+                posApiHelper.PrintSetFont(0, scale, scale)                    
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
