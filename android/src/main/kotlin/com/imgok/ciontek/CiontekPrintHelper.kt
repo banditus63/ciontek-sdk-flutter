@@ -1,6 +1,7 @@
 package com.imgok.ciontek
 
 import com.ctk.sdk.PosApiHelper
+import com.imgok.ciontek.models.PrintLine
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
@@ -55,7 +56,7 @@ object CiontekPrintHelper {
             "TEXT" -> {
                 
                 setLineSettings(line)
-                
+
                 val size = line.fontSize.toInt().toByte()
                 posApiHelper.PrintSetFontTTF(fontPath, size, size)
 
