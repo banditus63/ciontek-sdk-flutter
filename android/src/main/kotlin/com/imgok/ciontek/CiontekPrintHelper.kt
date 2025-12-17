@@ -23,7 +23,6 @@ object CiontekPrintHelper {
     fun setFontPath(path: String) {
         fontPath = path
         if (initialized) {
-            // Re-apply the font if printer already initialized
             posApiHelper.PrintSetFontTTF(fontPath, 24.toByte(), 24.toByte())
         }
     }
@@ -41,12 +40,11 @@ object CiontekPrintHelper {
     fun setLineSettings(line: PrintLine) {
         posApiHelper.PrintSetBold(if (line.bold) 1 else 0)
         posApiHelper.PrintSetUnderline(if (line.underline) 1 else 0)
-    val gray = line.textGray.coerceIn(1, 5)
-    posApiHelper.PrintSetGray(gray)
-    val alignmentValue = line.alignment ?: ALIGN_LEFT
+        val gray = line.textGray.coerceIn(1, 5)
+        posApiHelper.PrintSetGray(gray)
+        val alignmentValue = line.alignment ?: ALIGN_LEFT
         posApiHelper.PrintSetAlign(alignmentValue)
     }
-
 
     @Synchronized
     fun printLine(line: PrintLine) {
@@ -56,20 +54,18 @@ object CiontekPrintHelper {
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
-                // Ensure we have image data
-                line.image?.let { bytes ->
-                    // 1. Set Alignment for the image
+                val imageData = line.image
+                if (imageData != null) {
                     val alignmentValue = line.alignment ?: ALIGN_CENTER
                     posApiHelper.PrintSetAlign(alignmentValue)
                     
-                    // 2. Convert ByteArray from Flutter into an Android Bitmap
-                    val bitmap: Bitmap? = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                    
-                    // 3. Send to printer if decoding was successful
-                    bitmap?.let {
-                        posApiHelper.PrintBitmap(it)
+                    val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    if (bitmap != null) {
+                        // NOTE: If PrintBitmap fails to compile, change it to PrintBmp
+                        posApiHelper.PrintBitmap(bitmap) 
                     }
                 }
+            }
             else -> {
                 posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)
             }
@@ -79,6 +75,7 @@ object CiontekPrintHelper {
 
     @Synchronized
     fun printText(text: String) {
-        printLine(PrintLine(text, 3, false, false, "TEXT", null))
+        // Updated to pass null for the new image parameter
+        printLine(PrintLine(text, 3, false, false, "TEXT", null, null))
     }
 }
