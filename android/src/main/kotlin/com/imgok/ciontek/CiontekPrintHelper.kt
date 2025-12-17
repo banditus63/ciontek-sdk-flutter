@@ -62,7 +62,7 @@ object CiontekPrintHelper {
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     if (bitmap != null) {
                         // NOTE: If PrintBitmap fails to compile, change it to PrintBmp
-                        posApiHelper.PrintBitmap(bitmap) 
+                        posApiHelper.PrintBmp(bitmap) 
                     }
                 }
             }
