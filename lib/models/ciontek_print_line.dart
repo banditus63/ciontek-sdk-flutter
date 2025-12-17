@@ -44,6 +44,7 @@ class CiontekPrintLine {
   final CiontekPrintLineType type;
   final CiontekTextAlignment? alignment;
   final Uint8List? image;
+  final double fontSize;
 
   CiontekPrintLine({
     this.text = '',
@@ -53,6 +54,7 @@ class CiontekPrintLine {
     this.type = CiontekPrintLineType.text,
     this.alignment,
     this.image,
+    this.fontSize = 24.0,
   });
 
   // bitMap factory
@@ -85,6 +87,7 @@ class CiontekPrintLine {
   Map<String, dynamic> toMap() {
     return {
       'text': text,
+      'fontSize': fontSize,
       'textGray': textGray.index + 1,
       'bold': bold,
       'underline': underline,

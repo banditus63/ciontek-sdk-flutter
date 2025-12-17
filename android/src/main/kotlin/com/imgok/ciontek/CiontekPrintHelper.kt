@@ -38,6 +38,9 @@ object CiontekPrintHelper {
 
     @Synchronized
     fun setLineSettings(line: PrintLine) {
+        // font size (Width and Height)
+        posApiHelper.PrintSetFontTTF(fontPath, line.fontSize.toInt().toByte(), line.fontSize.toInt().toByte())
+        
         posApiHelper.PrintSetBold(if (line.bold) 1 else 0)
         posApiHelper.PrintSetUnderline(if (line.underline) 1 else 0)
         val gray = line.textGray.coerceIn(1, 5)

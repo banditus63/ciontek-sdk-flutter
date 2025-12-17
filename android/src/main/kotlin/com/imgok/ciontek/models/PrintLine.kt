@@ -8,11 +8,13 @@ class PrintLine(
     val type: String,
     val alignment: Int?,
     val image: ByteArray?,
+    val fontSize: Float,
 ) {
     companion object {
         fun fromMap(map: Map<String, Any>): PrintLine {
             return PrintLine(
                 text = map["text"] as String,
+                fontSize = (map["fontSize"] as? Double ?: 24.0).toFloat(),
                 textGray = map["textGray"] as Int,
                 bold = map["bold"] as Boolean,
                 underline = map["underline"] as Boolean,
