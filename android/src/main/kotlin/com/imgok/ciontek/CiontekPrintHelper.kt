@@ -39,9 +39,6 @@ object CiontekPrintHelper {
 
     @Synchronized
     fun setLineSettings(line: PrintLine) {
-        // font size (Width and Height)
-        posApiHelper.PrintSetFontTTF(fontPath, line.fontSize.toInt().toByte(), line.fontSize.toInt().toByte())
-
         posApiHelper.PrintSetBold(if (line.bold) 1 else 0)
         posApiHelper.PrintSetUnderline(if (line.underline) 1 else 0)
         val gray = line.textGray.coerceIn(1, 5)
@@ -57,8 +54,12 @@ object CiontekPrintHelper {
                 
                 setLineSettings(line)
 
-                val size = line.fontSize.toInt().toByte()
-                posApiHelper.PrintSetFontTTF(fontPath, size, size)
+                val internalScale: Byte = when {
+                line.fontSize >= 48 -> 2.toByte() // For sizes like 48 or 64
+                 line.fontSize >= 32 -> 1.toByte() // For sizes like 32 or 40
+                else -> 0.toByte()                // Standard size (24 and below)
+                 }
+                posApiHelper.PrintSetFontTTF(fontPath, internalScale, internalScale)
 
                 posApiHelper.PrintStr(line.text)
             }
