@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 // nLevel：
 // density level, value 1~5
 // 1:Lowest 3：medium 5：Highest
@@ -11,6 +13,7 @@ enum CiontekPrintLineType {
   qrCode,
   pdf417,
   itf,
+  image,
 }
 
 enum CiontekTextAlignment {
@@ -40,15 +43,27 @@ class CiontekPrintLine {
   final bool underline;
   final CiontekPrintLineType type;
   final CiontekTextAlignment? alignment;
+  final Uint8List? image;
 
   CiontekPrintLine({
-    required this.text,
+    this.text = '',
     this.textGray = TextGray.medium,
     this.bold = false,
     this.underline = false,
     this.type = CiontekPrintLineType.text,
     this.alignment,
+    this.image,
   });
+
+  // bitMap factory
+  factory CiontekPrintLine.bitmap(Uint8List bytes,
+      {CiontekTextAlignment alignment = CiontekTextAlignment.center}) {
+    return CiontekPrintLine(
+      type: CiontekPrintLineType.image,
+      image: bytes,
+      alignment: alignment,
+    );
+  }
 
   // Feed factory
   factory CiontekPrintLine.feedPaper({int lines = 1}) {
@@ -72,6 +87,7 @@ class CiontekPrintLine {
         CiontekPrintLineType.qrCode => 'QR_CODE',
         CiontekPrintLineType.pdf417 => 'PDF_417',
         CiontekPrintLineType.itf => 'ITF',
+        CiontekPrintLineType.image => 'IMAGE',
       },
     };
   }

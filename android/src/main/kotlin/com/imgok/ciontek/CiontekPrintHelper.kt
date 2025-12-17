@@ -1,6 +1,8 @@
 package com.imgok.ciontek
 
 import com.ctk.sdk.PosApiHelper
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 
 object CiontekPrintHelper {
     private val posApiHelper: PosApiHelper = PosApiHelper.getInstance()
@@ -53,6 +55,21 @@ object CiontekPrintHelper {
                 setLineSettings(line)
                 posApiHelper.PrintStr(line.text)
             }
+            "IMAGE" -> {
+                // Ensure we have image data
+                line.image?.let { bytes ->
+                    // 1. Set Alignment for the image
+                    val alignmentValue = line.alignment ?: ALIGN_CENTER
+                    posApiHelper.PrintSetAlign(alignmentValue)
+                    
+                    // 2. Convert ByteArray from Flutter into an Android Bitmap
+                    val bitmap: Bitmap? = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    
+                    // 3. Send to printer if decoding was successful
+                    bitmap?.let {
+                        posApiHelper.PrintBitmap(it)
+                    }
+                }
             else -> {
                 posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)
             }
