@@ -47,12 +47,17 @@ object CiontekPrintHelper {
                 
                 setLineSettings(line)
 
-                val multiplier: Byte = when {
-                line.fontSize >= 48f -> 2.toByte() // Huge (Triple size)
-                line.fontSize >= 32f -> 1.toByte() // Large (Double size)
-                else -> 0.toByte()                // Normal (Standard size)
-                }
-                posApiHelper.PrintSetFont(0.toByte(), multiplier, multiplier)                   
+                val fontType: Byte
+                val multiplier: Byte
+
+                if (line.fontSize >= 32f) {
+                fontType = 16.toByte()
+                multiplier = 3.toByte()
+                } else {
+                 fontType = 24.toByte()
+                 multiplier = 0.toByte()
+             }
+                posApiHelper.PrintSetFont(fontType, fontType, multiplier)                   
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
