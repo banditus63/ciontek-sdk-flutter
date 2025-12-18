@@ -63,21 +63,21 @@ object CiontekPrintHelper {
             "IMAGE" -> {
                 val imageData = line.image
                 if (imageData != null) {
-                    val alignmentValue = line.alignment ?: ALIGN_CENTER
+                    val alignmentValue = line.alignment ?: ALIGN_LEFT
                                 
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     if (bitmap != null) {
-                        posApiHelper.PrintSetAlign(alignmentValue)                        
-                        posApiHelper.PrintBmp(bitmap) 
+                        posApiHelper.PrintSetAlign(alignmentValue)
+                        posApiHelper.PrintSetLeftIndent(40)                        
+                        posApiHelper.PrintBmp(bitmap)
+                        posApiHelper.PrintSetLeftIndent(0) 
                     }
                 }
             }
            "QR_CODE" -> {
             val alignmentValue = line.alignment ?: ALIGN_CENTER
     
-            // 1. Reset horizontal margins (as we did before)
-            posApiHelper.PrintSetLeftSpace(0)
-            posApiHelper.PrintSetLeftIndent(0)
+        
     
             // 2. MINIMIZE Vertical Space
             // PrintSetLineSpace sets the height of the gap between lines.
@@ -95,7 +95,7 @@ object CiontekPrintHelper {
             // 5. IMPORTANT: Reset line space back to a normal value (e.g., 30-40) 
             // for the text that follows, otherwise the next line of text 
             // will touch the bottom of the QR code.
-            posApiHelper.PrintSetLineSpace(20) 
+            posApiHelper.PrintSetLineSpace(0) 
             }
         }
         posApiHelper.PrintStart()
