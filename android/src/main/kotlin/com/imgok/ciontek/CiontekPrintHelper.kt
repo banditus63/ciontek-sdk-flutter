@@ -72,17 +72,30 @@ object CiontekPrintHelper {
                     }
                 }
             }
-            "QR_CODE" -> {
+           "QR_CODE" -> {
             val alignmentValue = line.alignment ?: ALIGN_CENTER
+    
+            // 1. Reset horizontal margins (as we did before)
+            posApiHelper.PrintSetLeftSpace(0)
+            posApiHelper.PrintSetLeftIndent(0)
+    
+            // 2. MINIMIZE Vertical Space
+            // PrintSetLineSpace sets the height of the gap between lines.
+            // Setting this to 0 (or a very low number like 2) removes the gap above the QR.
+            posApiHelper.PrintSetLineSpace(0) 
+
             posApiHelper.PrintSetAlign(alignmentValue)
-            
-            // Use PrintBarcode for QR codes. 
-            // Type 58 is commonly used for QR_CODE in this SDK, 
-            // but we can pass the string "QR_CODE" if the SDK supports it.
-            posApiHelper.PrintBarcode(line.text, 180, 180, "QR_CODE")
-            }
-            else -> {
-                posApiHelper.PrintBarcode(line.text, DEFAULT_BARCODE_WIDTH, DEFAULT_BARCODE_HEIGHT, line.type)
+    
+            // 3. Trim the text to ensure no hidden \n characters are creating space
+             val qrData = line.text.trim()
+    
+            // 4. Print the QR Code
+            posApiHelper.PrintBarcode(qrData, 180, 180, "QR_CODE")
+    
+            // 5. IMPORTANT: Reset line space back to a normal value (e.g., 30-40) 
+            // for the text that follows, otherwise the next line of text 
+            // will touch the bottom of the QR code.
+            posApiHelper.PrintSetLineSpace(20) 
             }
         }
         posApiHelper.PrintStart()
