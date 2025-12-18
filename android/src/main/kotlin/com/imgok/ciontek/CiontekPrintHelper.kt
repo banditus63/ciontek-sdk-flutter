@@ -63,12 +63,17 @@ object CiontekPrintHelper {
             "IMAGE" -> {
                 val imageData = line.image
                 if (imageData != null) {
-                    val alignmentValue = line.alignment ?: ALIGN_LEFT
-                                
+                    val alignmentValue = line.alignment ?: ALIGN_LEFT                                
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                    if (bitmap != null) {
-                        posApiHelper.PrintSetAlign(alignmentValue)
-                        posApiHelper.PrintSetLeftIndent(40)                        
+
+                        if (bitmap != null) {
+                            if (alignmentValue == 0) { 
+                                posApiHelper.PrintSetLeftIndent(40) 
+                        } else {
+                        // For CENTER (1) or RIGHT (2), we must have 0 indent for accuracy
+                        posApiHelper.PrintSetLeftIndent(0) 
+                        }
+                        posApiHelper.PrintSetAlign(alignmentValue)                                               
                         posApiHelper.PrintBmp(bitmap)
                         posApiHelper.PrintSetLeftIndent(0) 
                     }
