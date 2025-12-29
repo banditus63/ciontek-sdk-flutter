@@ -51,7 +51,7 @@ object CiontekPrintHelper {
                 val multiplier: Byte
 
                 if (line.fontSize >= 32f) {
-                fontType = 16.toByte()
+                fontType = 3f.toByte()
                 multiplier = 3.toByte()
                 } else {
                  fontType = 24.toByte()
