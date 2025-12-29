@@ -44,24 +44,20 @@ object CiontekPrintHelper {
     fun printLine(line: PrintLine) {
         when (line.type) {
             "TEXT" -> {
+                
                 setLineSettings(line)
 
-                val fontHeight: Byte
-                val fontWidth: Byte
-                val multiplier: Byte = 0.toInt().toByte() // Keep this at 0 for "Normal" weight
+                val fontType: Byte
+                val multiplier: Byte
 
                 if (line.fontSize >= 32f) {
-                    // High resolution base font (Large but clean)
-                    fontHeight = 48.toInt().toByte() 
-                    fontWidth = 24.toInt().toByte() 
+                fontType = 16.toByte()
+                multiplier = 3.toByte()
                 } else {
-                    // Standard resolution
-                    fontHeight = 24.toInt().toByte()
-                    fontWidth = 24.toInt().toByte()
-                }
-
-                // Parameters: (Height, Width, Zoom/Weight)
-                posApiHelper.PrintSetFont(fontHeight, fontWidth, multiplier)                   
+                 fontType = 24.toByte()
+                 multiplier = 0.toByte()
+             }
+                posApiHelper.PrintSetFont(fontType, fontType, multiplier)                   
                 posApiHelper.PrintStr(line.text)
             }
             "IMAGE" -> {
